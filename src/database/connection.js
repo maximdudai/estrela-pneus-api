@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if(err)
     {
-        throw new Error(err);
+        console.log(err.stack)
     }
     else {
         console.log('Connection was succesfully registered!');

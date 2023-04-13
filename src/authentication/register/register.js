@@ -1,29 +1,22 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
-app.post('/register', (req, res) => {
+app.post('/Authentication', (req, res) => {
     const { 
-        fName, 
-        sName,
-        userBirth,
-        userPass,
-        userEmail, 
-        userContact
+        userEmail,
+        fullName,
+        userPass
     } = req.body;
 
     const hashedPassword = bcrypt.hashSync(userPass, 10);
 
     const sql = `INSERT INTO users 
-        (firstName, secondName, userBirth, userPassword, emailAddress, userContact) 
+        (emailAddress, fullName, userPassword)
         VALUES 
         (
-            '${fName}',
-            '${sName}',
-            '${userBirth}',
-            '${hashedPassword}',
             '${userEmail}',
-            '${userContact}',
+            '${fullName}',
+            '${userPass}'
         )`;
     
     db.query(sql, (err, result) => {
