@@ -7,6 +7,11 @@ const error_message = {
     TYPE_SERVER: 'Internat sever error'
 }
 
+const generateAuthenticationTokenJWT = () => {
+    const token = authToken.sign({ password }, 'secret');
+    return res.status(200).send({ token });
+};
+
 const onClientRegister = async (res, {email, name, password}) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
   
@@ -21,12 +26,10 @@ const onClientRegister = async (res, {email, name, password}) => {
         const values = [name, hashedPassword, email];
         await dbConnection.query(insertQuery, values); 
 
-        const token = authToken.sign({ password }, 'secret');
-        res.status(200).send({ token });
-
+        generateAuthenticationTokenJWT();
     } catch (err) {
         console.error(err);
-        res.status(200).json({ message: 'Something went wrong, please try again later!' });
+        res.status(400).json({ message: 'Something went wrong, please try again later!' });
     }
 
 };
@@ -45,9 +48,7 @@ const onClientLogin = async (res, { email, password }) => {
                 return;
             }
             else {
-                const token = authToken.sign({ password }, 'secret');
-                res.status(200).send({ token });
-                return;
+                return generateAuthenticationTokenJWT()
             }
         } 
 
