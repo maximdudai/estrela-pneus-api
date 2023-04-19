@@ -1,10 +1,13 @@
 import mysql from 'mysql2/promise';
 
+import dotenv from 'dotenv'
+dotenv.config();
+
 const dbConnection = mysql.createPool({
-  user: 'root',
-  host: 'localhost',
+  user: process.env.USER,
+  host: process.env.HOST,
   password: '',
-  database: 'estrela-pneus'
+  database: process.env.DATABASE
 });
 
 export default dbConnection;
