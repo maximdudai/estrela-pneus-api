@@ -34,13 +34,13 @@ const onClientRegister = async (res, {email, name, password}) => {
 const onClientLogin = async (res, { email, password }) => {
     try {
 
-        const [rows] = await dbConnection.query('SELECT * FROM user_accounts WHERE emailAddress = ?', [email]);
+        const [rows] = await dbConnection.query('SELECT * FROM user_accounts WHERE emailAddress = ? LIMIT 1', [email]);
         if(rows.length > 0) {
             const data = rows[0];
             const comparePassword = bcrypt.compareSync(password, data.userPassword);
             if(!comparePassword) {
                 res.status(400).json({
-                    error_type: error_message.TYPE_DATA
+                    message: error_message.TYPE_DATA
                 });
                 return;
             }
